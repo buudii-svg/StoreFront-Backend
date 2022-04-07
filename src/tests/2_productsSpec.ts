@@ -26,6 +26,14 @@ describe("Product Model", () => {
 
 
 describe("Products Endpoints Responses", () => {
+    it("create product", async () => {
+        const response = await request.post("/products/add").send({
+            name: "IPhone 11",
+            price: "10000",
+            category: "mobile"
+        });
+        expect(response.status).toBe(200);
+    });
     it(`get all products`, async (): Promise<void> => {
         const response = await request.get('/products');
         expect(response.status).toEqual(200);
