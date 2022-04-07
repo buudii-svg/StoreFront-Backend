@@ -17,3 +17,5 @@ orders_routes(app)
 app.listen(3000, () => {
     console.log(`server started at localhost:${address}`);
 });
+
+export default app;

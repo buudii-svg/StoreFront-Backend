@@ -39,71 +39,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var tokens_1 = __importDefault(require("../middlewares/tokens"));
+var supertest_1 = __importDefault(require("supertest"));
 var products_1 = require("../models/products");
-var store = new products_1.productStore();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
-            case 1:
-                products = _a.sent();
-                res.json(products);
-                return [2 /*return*/];
-        }
+var server_1 = __importDefault(require("../server"));
+var product = new products_1.productStore();
+var request = (0, supertest_1.default)(server_1.default);
+describe("Product Model", function () {
+    it('index method', function () {
+        expect(product.index).toBeDefined();
     });
-}); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, product;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = Number(req.params.id);
-                return [4 /*yield*/, store.show(id)];
-            case 1:
-                product = _a.sent();
-                res.json(product);
-                return [2 /*return*/];
-        }
+    it('show method', function () {
+        expect(product.show).toBeDefined();
     });
-}); };
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var p, product;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                p = {
-                    name: req.body.name,
-                    price: req.body.price,
-                    category: req.body.category
-                };
-                return [4 /*yield*/, store.create(p)];
-            case 1:
-                product = _a.sent();
-                res.json(product);
-                return [2 /*return*/];
-        }
+    it('getProductsByCategory method', function () {
+        expect(product.getProductsByCategory).toBeDefined();
     });
-}); };
-var getProductsByCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var category, products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                category = req.params.category;
-                return [4 /*yield*/, store.getProductsByCategory(category)];
-            case 1:
-                products = _a.sent();
-                res.json(products);
-                return [2 /*return*/];
-        }
+    it('create method', function () {
+        expect(product.create).toBeDefined();
     });
-}); };
-var product_routes = function (app) {
-    app.get('/products', index);
-    app.get('/products/:id', show);
-    app.post('/products/add', tokens_1.default, create);
-    app.get('/products/category/:category', getProductsByCategory);
-};
-exports.default = product_routes;
+});
+describe("Products Endpoints Responses", function () {
+    it("get all products", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/products')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toEqual(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("get product by id", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/products/1')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toEqual(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("get product by category", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/products/category/mobile')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toEqual(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});

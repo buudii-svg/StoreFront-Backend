@@ -18,6 +18,9 @@ export type user = {
 };
 
 export class userStore {
+    prototype(prototype: any, arg1: string) {
+        throw new Error("Method not implemented.");
+    }
 
     async index(): Promise<user[]> {
         try {

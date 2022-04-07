@@ -38,17 +38,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.userStore = void 0;
 //@ts-ignore
 var database_1 = __importDefault(require("../database"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1["default"].config();
+dotenv_1.default.config();
 var _a = process.env, SALT_ROUNDS = _a.SALT_ROUNDS, PEPPER = _a.PEPPER;
 var userStore = /** @class */ (function () {
     function userStore() {
     }
+    userStore.prototype.prototype = function (prototype, arg1) {
+        throw new Error("Method not implemented.");
+    };
     userStore.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_1;
@@ -56,7 +59,7 @@ var userStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1["default"].connect()];
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
                         sql = 'SELECT * FROM users';
@@ -80,7 +83,7 @@ var userStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1["default"].connect()];
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
                         sql = 'SELECT * FROM users WHERE id=($1)';
@@ -104,11 +107,11 @@ var userStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1["default"].connect()];
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
                         sql = 'INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING *';
-                        hash = bcrypt_1["default"].hashSync(user.password + PEPPER, 
+                        hash = bcrypt_1.default.hashSync(user.password + PEPPER, 
                         //@ts-ignore
                         parseInt(SALT_ROUNDS));
                         return [4 /*yield*/, conn.query(sql, [user.first_name, user.last_name, hash])];

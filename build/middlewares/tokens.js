@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function getToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
@@ -48,7 +48,7 @@ function getToken(req, res, next) {
                 authorizationHeader = req.headers.authorization;
                 token = authorizationHeader.split(' ')[1];
                 //@ts-ignore
-                jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+                jsonwebtoken_1.default.verify(token, process.env.TOKEN_SECRET);
                 next();
             }
             catch (err) {
@@ -60,4 +60,4 @@ function getToken(req, res, next) {
         });
     });
 }
-exports["default"] = getToken;
+exports.default = getToken;

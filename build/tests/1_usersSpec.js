@@ -40,67 +40,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var users_1 = require("../models/users");
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var tokens_1 = __importDefault(require("../middlewares/tokens"));
-var store = new users_1.userStore();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.index()];
-            case 1:
-                users = _a.sent();
-                res.json(users);
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                res.status(400);
-                res.json(error_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
+var supertest_1 = __importDefault(require("supertest"));
+var server_1 = __importDefault(require("../server"));
+var request = (0, supertest_1.default)(server_1.default);
+var user = new users_1.userStore();
+describe("User Model", function () {
+    it('index method', function () {
+        expect(user.index).toBeDefined();
     });
-}); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = Number(req.params.id);
-                return [4 /*yield*/, store.show(id)];
-            case 1:
-                user = _a.sent();
-                res.json(user);
-                return [2 /*return*/];
-        }
+    it('show method', function () {
+        expect(user.show).toBeDefined();
     });
-}); };
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var u, user, token;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                u = {
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
-                    password: req.body.password
-                };
-                return [4 /*yield*/, store.create(u)
-                    //@ts-ignore
-                ];
-            case 1:
-                user = _a.sent();
-                token = jsonwebtoken_1.default.sign({ u: user }, process.env.TOKEN_SECRET);
-                res.json(token);
-                return [2 /*return*/];
-        }
+    it('create method', function () {
+        expect(user.create).toBeDefined();
     });
-}); };
-var users_routes = function (app) {
-    app.get('/users', tokens_1.default, index);
-    app.get('/users/:id', tokens_1.default, show);
-    app.post('/users/add', create);
-};
-exports.default = users_routes;
+});
+describe("User Endpoints Responses", function () {
+    it("ceate new user", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.post('/users/add').send({
+                        first_name: 'reem',
+                        last_name: 'atef',
+                        password: 'reematef'
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toEqual(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("get all users", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/users').set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1Ijp7ImlkIjoyLCJmaXJzdF9uYW1lIjoibXVoYW1lZCIsImxhc3RfbmFtZSI6ImtoYWxlZCIsInBhc3N3b3JkIjoiJDJiJDEwJGRndS5URHkuTXNNa0ZrM2VMREp0ay5yWVVWbGNmY0xqNkFqTmxoR3NGT1ZENk5jNE5DT1guIn0sImlhdCI6MTY0OTM0MTI3MX0.r3fU9IWTqzhFejgFAzOHdt8IosUIzYHyvm_NEYnCK-o')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toEqual(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("get user by id", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/users/1').set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1Ijp7ImlkIjoyLCJmaXJzdF9uYW1lIjoibXVoYW1lZCIsImxhc3RfbmFtZSI6ImtoYWxlZCIsInBhc3N3b3JkIjoiJDJiJDEwJGRndS5URHkuTXNNa0ZrM2VMREp0ay5yWVVWbGNmY0xqNkFqTmxoR3NGT1ZENk5jNE5DT1guIn0sImlhdCI6MTY0OTM0MTI3MX0.r3fU9IWTqzhFejgFAzOHdt8IosUIzYHyvm_NEYnCK-o')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toEqual(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});

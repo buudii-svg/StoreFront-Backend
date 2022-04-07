@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var tokens_1 = __importDefault(require("../middlewares/tokens"));
 var orders_1 = require("../models/orders");
@@ -50,13 +50,13 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 0:
                 o = {
                     user_id: req.body.user_id,
-                    status: req.body.status
+                    status: req.body.status,
                 };
                 try {
                     authorizationHeader = req.headers.authorization;
                     token = authorizationHeader.split(' ')[1];
                     //@ts-ignore
-                    jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+                    jsonwebtoken_1.default.verify(token, process.env.TOKEN_SECRET);
                 }
                 catch (err) {
                     res.status(401);
@@ -136,8 +136,8 @@ var addProductTOOrder = function (req, res) { return __awaiter(void 0, void 0, v
 }); };
 var orders_routes = function (app) {
     app.post('/orders/add', create);
-    app.get('/orders/completed/:id', tokens_1["default"], completedOrders);
-    app.get('/orders/user/:id', tokens_1["default"], getActiveOrders);
-    app.post('/orders/addProduct/:id', tokens_1["default"], addProductTOOrder);
+    app.get('/orders/completed/:id', tokens_1.default, completedOrders);
+    app.get('/orders/user/:id', tokens_1.default, getActiveOrders);
+    app.post('/orders/addProduct/:id', tokens_1.default, addProductTOOrder);
 };
-exports["default"] = orders_routes;
+exports.default = orders_routes;
