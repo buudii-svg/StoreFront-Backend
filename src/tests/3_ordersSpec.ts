@@ -25,7 +25,7 @@ describe("Orders Model", () => {
 
 
 describe("Order Endpoints Responses", () => {
-    it(`ceate new user`, async (): Promise<void> => {
+    it(`ceate new order`, async (): Promise<void> => {
         const response = await request.post('/orders/add').send({
             user_id: '1',
             status: 'active'

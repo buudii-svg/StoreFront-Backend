@@ -20,20 +20,19 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Completed Orders by user (args: user id)[token required] '/orders/completed/:id' [GET]
 - [ADDED] Add product to order [token required] '/orders/addProduct/:id' [POST] {quantity: number, order_id: number, product_id: number}
 
-## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
-Table: products (id: SERIAL PRIMARY KEY, name: VARCHAR(100), price: INTEGER, category: VARCHAR(50))
-
 #### User
 - id
 - first_name
 - last_name
 - password
-Table: users (id: SERIAL PRIMARY KEY, first_name:varchar(100), last_name:varchar(100), password:varchar(250))
+TABLE users(id SERIAL PRIMARY KEY , first_name VARCHAR(100), last_name VARCHAR(100), password VARCHAR(255))
+
+#### Product
+-  id
+- name
+- price
+- [OPTIONAL] category
+ TABLE products(id SERIAL PRIMARY KEY,name VARCHAR(100),price INTEGER,category VARCHAR(50))
 
 #### Orders
 - id
@@ -41,4 +40,4 @@ Table: users (id: SERIAL PRIMARY KEY, first_name:varchar(100), last_name:varchar
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
-Table: orders (id: SERIAL PRIMARY KEY, user_id: bigint, price: INTEGER, status: VARCHAR(100))
+TABLE orders (id SERIAL PRIMARY KEY,user_id bigint REFERENCES users(id),status VARCHAR(100))
