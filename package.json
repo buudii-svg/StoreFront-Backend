@@ -1,0 +1,49 @@
+{
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.13",
+    "@types/jasmine": "^4.0.2",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/pg": "^8.6.5",
+    "@types/supertest": "^2.0.12",
+    "jasmine": "^4.0.2",
+    "jasmine-spec-reporter": "^7.0.0",
+    "supertest": "^6.2.2",
+    "ts-node": "^10.7.0",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.3"
+  },
+  "name": "storefront-backend",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "jasmine": "jasmine",
+    "start": "node src/server.ts",
+    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./build --onSuccess \"node ./build/server.js\"",
+    "test": "set ENV=test&& db-migrate --env test up && npm run build && npm run jasmine && db-migrate --env test reset",
+    "drop_dev": "db-migrate db:drop market",
+    "drop_test": "db-migrate db:drop market_test",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buudii-svg/StoreFront-Backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/buudii-svg/StoreFront-Backend/issues"
+  },
+  "homepage": "https://github.com/buudii-svg/StoreFront-Backend#readme"
+}
