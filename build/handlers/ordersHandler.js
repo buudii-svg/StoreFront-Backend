@@ -39,71 +39,105 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var tokens_1 = __importDefault(require("../middlewares/tokens"));
-var products_1 = require("../models/products");
-var store = new products_1.productStore();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
-            case 1:
-                products = _a.sent();
-                res.json(products);
-                return [2 /*return*/];
-        }
-    });
-}); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, product;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = Number(req.params.id);
-                return [4 /*yield*/, store.show(id)];
-            case 1:
-                product = _a.sent();
-                res.json(product);
-                return [2 /*return*/];
-        }
-    });
-}); };
+var orders_1 = require("../models/orders");
+var store = new orders_1.orderStore();
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var p, product;
+    var o, authorizationHeader, token, orders;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                p = {
-                    name: req.body.name,
-                    price: req.body.price,
-                    category: req.body.category
+                o = {
+                    user_id: req.body.user_id,
+                    status: req.body.status
                 };
-                return [4 /*yield*/, store.create(p)];
+                try {
+                    authorizationHeader = req.headers.authorization;
+                    token = authorizationHeader.split(' ')[1];
+                    //@ts-ignore
+                    jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+                }
+                catch (err) {
+                    res.status(401);
+                    res.json('Access denied, invalid token');
+                    return [2 /*return*/];
+                }
+                return [4 /*yield*/, store.create(o)];
             case 1:
-                product = _a.sent();
-                res.json(product);
+                orders = _a.sent();
+                res.json(orders);
                 return [2 /*return*/];
         }
     });
 }); };
-var getProductsByCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var category, products;
+var completedOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, orders, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                category = req.params.category;
-                return [4 /*yield*/, store.getProductsByCategory(category)];
+                _a.trys.push([0, 2, , 3]);
+                id = parseInt(req.params.id);
+                return [4 /*yield*/, store.completedOrders(id)];
             case 1:
-                products = _a.sent();
-                res.json(products);
-                return [2 /*return*/];
+                orders = _a.sent();
+                res.json(orders);
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(400);
+                res.json(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-var product_routes = function (app) {
-    app.get('/products', index);
-    app.get('/products/:id', show);
-    app.post('/products/add', tokens_1["default"], create);
-    app.get('/products/category/:category', getProductsByCategory);
+var getActiveOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, order, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                id = parseInt(req.params.id);
+                return [4 /*yield*/, store.getActiveOrders(id)];
+            case 1:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(400);
+                res.json(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var addProductTOOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, order, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                id = parseInt(req.params.id);
+                return [4 /*yield*/, store.addProductTOOrder(id, req.body.product_id, req.body.quantity)];
+            case 1:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.status(400);
+                res.json(error_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var orders_routes = function (app) {
+    app.post('/orders/add', create);
+    app.get('/orders/completed/:id', tokens_1["default"], completedOrders);
+    app.get('/orders/user/:id', tokens_1["default"], getActiveOrders);
+    app.post('/orders/addProduct/:id', tokens_1["default"], addProductTOOrder);
 };
-exports["default"] = product_routes;
+exports["default"] = orders_routes;

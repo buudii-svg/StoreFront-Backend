@@ -1,14 +1,19 @@
 import express, { Request, Response } from 'express'
 import { user, userStore } from '../models/users'
 import jwt from 'jsonwebtoken'
+import getToken from '../middlewares/tokens'
 
 const store = new userStore()
 
 const index = async (_req: Request, res: Response) => {
-    const users = await store.index()
-    res.json(users)
+    try {
+        const users = await store.index()
+        res.json(users)
+}catch(error){
+    res.status(400)
+    res.json(error)
 }
-
+}
 const show = async (req: Request, res: Response) => {
     const id = Number(req.params.id)
     const user = await store.show(id)
@@ -22,14 +27,14 @@ const create = async (req: Request, res: Response) => {
     };
     const user = await store.create(u)
     //@ts-ignore
-    var token = jwt.sign({ u: user }, process.env.JWT_SECRET)
+    var token = jwt.sign({ u: user }, process.env.TOKEN_SECRET)
     res.json(token)
 }
 
 
 const users_routes = (app: express.Application) => {
-    app.get('/users', index)
-    app.get('/users/:id', show)
+    app.get('/users',getToken, index)
+    app.get('/users/:id',getToken, show)
     app.post('/users/add', create)
 }
 

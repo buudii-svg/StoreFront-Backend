@@ -41,16 +41,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var users_1 = require("../models/users");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var tokens_1 = __importDefault(require("../middlewares/tokens"));
 var store = new users_1.userStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
                 users = _a.sent();
                 res.json(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(400);
+                res.json(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -83,15 +92,15 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 ];
             case 1:
                 user = _a.sent();
-                token = jsonwebtoken_1["default"].sign({ u: user }, process.env.JWT_SECRET);
+                token = jsonwebtoken_1["default"].sign({ u: user }, process.env.TOKEN_SECRET);
                 res.json(token);
                 return [2 /*return*/];
         }
     });
 }); };
 var users_routes = function (app) {
-    app.get('/users', index);
-    app.get('/users/:id', show);
+    app.get('/users', tokens_1["default"], index);
+    app.get('/users/:id', tokens_1["default"], show);
     app.post('/users/add', create);
 };
 exports["default"] = users_routes;

@@ -39,108 +39,108 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.productStore = void 0;
+exports.orderStore = void 0;
 //@ts-ignore
 var database_1 = __importDefault(require("../database"));
-var productStore = /** @class */ (function () {
-    function productStore() {
+var orderStore = /** @class */ (function () {
+    function orderStore() {
     }
-    productStore.prototype.index = function () {
+    orderStore.prototype.create = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_1;
+            var sql, conn, result, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
+                        sql = 'INSERT INTO orders (user_id, status) VALUES($1, $2) RETURNING *';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM products';
-                        return [4 /*yield*/, conn.query(sql)];
+                        return [4 /*yield*/, conn.query(sql, [order.user_id, order.status])];
                     case 2:
                         result = _a.sent();
                         conn.release();
-                        return [2 /*return*/, result.rows];
+                        return [2 /*return*/, result.rows[0]];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("Could not get any product. Error: ".concat(err_1));
+                        throw new Error("Could not add new order ".concat(order.id, ". Error: ").concat(err_1));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    productStore.prototype.show = function (id) {
+    orderStore.prototype.getActiveOrders = function (user_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_2;
+            var sql, conn, result, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
+                        sql = 'SELECT * FROM orders WHERE user_id=($1) AND status=($2)';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM products WHERE id=($1)';
-                        return [4 /*yield*/, conn.query(sql, [id])];
-                    case 2:
-                        result = _a.sent();
-                        conn.release();
-                        return [2 /*return*/, result.rows[0]];
-                    case 3:
-                        err_2 = _a.sent();
-                        throw new Error("Could not find product ".concat(id, ". Error: ").concat(err_2));
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    productStore.prototype.create = function (product) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1["default"].connect()];
-                    case 1:
-                        conn = _a.sent();
-                        sql = 'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *';
-                        return [4 /*yield*/, conn.query(sql, [product.name, product.price, product.category])];
-                    case 2:
-                        result = _a.sent();
-                        conn.release();
-                        return [2 /*return*/, result.rows[0]];
-                    case 3:
-                        err_3 = _a.sent();
-                        throw new Error("Could not add new product ".concat(product.name, ". Error: ").concat(err_3));
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    productStore.prototype.getProductsByCategory = function (category) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1["default"].connect()];
-                    case 1:
-                        conn = _a.sent();
-                        sql = 'SELECT * FROM products WHERE category=($1)';
-                        return [4 /*yield*/, conn.query(sql, [category])];
+                        return [4 /*yield*/, conn.query(sql, [user_id, 'active'])];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows];
                     case 3:
-                        err_4 = _a.sent();
-                        throw new Error("Could not get products by category ".concat(category, ". Error: ").concat(err_4));
+                        err_2 = _a.sent();
+                        throw new Error("Could not get active orders for user ".concat(user_id, ". Error: ").concat(err_2));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    return productStore;
+    orderStore.prototype.completedOrders = function (user_id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'SELECT * FROM orders WHERE user_id=($1) AND status=($2)';
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [user_id, 'completed'])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        err_3 = _a.sent();
+                        throw new Error("Could not get completed orders for user ".concat(user_id, ". Error: ").concat(err_3));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    orderStore.prototype.addProductTOOrder = function (order_id, product_id, quantity) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2,$3) RETURNING *';
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [order_id, product_id, quantity])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("Could not add product to order ".concat(order_id, ". Error: ").concat(err_4));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return orderStore;
 }());
-exports.productStore = productStore;
+exports.orderStore = orderStore;

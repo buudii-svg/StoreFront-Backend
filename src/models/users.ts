@@ -1,5 +1,5 @@
 //@ts-ignore
-import client from '../databse';
+import client from '../database';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 

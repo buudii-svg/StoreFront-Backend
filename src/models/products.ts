@@ -49,5 +49,17 @@ export class productStore {
             throw new Error(`Could not add new product ${product.name}. Error: ${err}`);
         }
     }
+    async getProductsByCategory(category: string): Promise<product[]> {
+        try {
+            //@ts-ignore
+            const conn = await client.connect();
+            const sql = 'SELECT * FROM products WHERE category=($1)';
+            const result = await conn.query(sql, [category]);
+            conn.release();
+            return result.rows;
+        } catch (err) {
+            throw new Error(`Could not get products by category ${category}. Error: ${err}`);
+        }
+    }
 }
 
