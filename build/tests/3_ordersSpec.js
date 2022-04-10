@@ -59,7 +59,7 @@ describe("Orders Model", function () {
     });
 });
 describe("Order Endpoints Responses", function () {
-    it("ceate new user", function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("ceate new order", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {

@@ -16,6 +16,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Create [token required] '/users/add' [POST] {first_name: string, last_name: string, password: string}
 
 #### Orders
+- Create [token required] '/orders/add' [POST] {user_id: number, product_id: number}
 - Current Order by user (args: user id)[token required] '/orders/user/:id' [GET]
 - [OPTIONAL] Completed Orders by user (args: user id)[token required] '/orders/completed/:id' [GET]
 - [ADDED] Add product to order [token required] '/orders/addProduct/:id' [POST] {quantity: number, order_id: number, product_id: number}
@@ -36,8 +37,12 @@ TABLE users(id SERIAL PRIMARY KEY , first_name VARCHAR(100), last_name VARCHAR(1
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
 - user_id
 - status of order (active or complete)
 TABLE orders (id SERIAL PRIMARY KEY,user_id bigint REFERENCES users(id),status VARCHAR(100))
+
+### order_products
+- id
+- order_id
+- id of each product in the order
+- quantity of each product in the order

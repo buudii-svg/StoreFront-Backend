@@ -31,7 +31,7 @@ describe("Products Endpoints Responses", () => {
             name: "IPhone 11",
             price: "10000",
             category: "mobile"
-        });
+        }).set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1Ijp7ImlkIjoyLCJmaXJzdF9uYW1lIjoibXVoYW1lZCIsImxhc3RfbmFtZSI6ImtoYWxlZCIsInBhc3N3b3JkIjoiJDJiJDEwJGRndS5URHkuTXNNa0ZrM2VMREp0ay5yWVVWbGNmY0xqNkFqTmxoR3NGT1ZENk5jNE5DT1guIn0sImlhdCI6MTY0OTM0MTI3MX0.r3fU9IWTqzhFejgFAzOHdt8IosUIzYHyvm_NEYnCK-o');
         expect(response.status).toBe(200);
     });
     it(`get all products`, async (): Promise<void> => {
