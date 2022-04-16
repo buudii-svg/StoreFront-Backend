@@ -1,25 +1,7 @@
-import { userStore } from "../models/users";
 import supertest from "supertest";
 import app from "../server";
 
 const request = supertest(app);
-const user = new userStore();
-
-
-describe("User Model", () => {
-    it('index method', () => {
-        expect(user.index).toBeDefined();
-    });
-
-    it('show method', () => {
-        expect(user.show).toBeDefined();
-    });
-
-    it('create method', () => {
-        expect(user.create).toBeDefined();
-    });
-});
-
 
 describe("User Endpoints Responses", () => {
     it(`ceate new user`, async (): Promise<void> => {

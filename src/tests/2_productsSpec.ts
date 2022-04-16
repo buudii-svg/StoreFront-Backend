@@ -1,29 +1,7 @@
 import supertest from "supertest";
-import { productStore } from "../models/products";
 import app from "../server";
 
-const product = new productStore();
 const request = supertest(app);
-
-describe("Product Model", () => {
-    it('index method', () => {
-        expect(product.index).toBeDefined();
-    });
-
-    it('show method', () => {
-        expect(product.show).toBeDefined();
-    });
-
-    it('getProductsByCategory method', () => {
-        expect(product.getProductsByCategory).toBeDefined();
-    });
-
-    it('create method', () => {
-        expect(product.create).toBeDefined();
-    });
-});
-
-
 
 describe("Products Endpoints Responses", () => {
     it("create product", async () => {
