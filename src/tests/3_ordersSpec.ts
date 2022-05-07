@@ -1,7 +1,30 @@
 import supertest from "supertest";
 import app from "../server";
+import { orderStore } from "../models/orders";
 
 const request = supertest(app);
+const order = new orderStore();
+
+
+describe("Orders Model", () => {
+    it('completedOrders method', () => {
+        expect(order.completedOrders).toBeDefined();
+    });
+
+    it('getActiveOrders method', () => {
+        expect(order.getActiveOrders).toBeDefined();
+    });
+
+    it('create method', () => {
+        expect(order.create).toBeDefined();
+    });
+
+    it('addProductToOrder method', () => {
+        expect(order.addProductTOOrder).toBeDefined();
+    });
+});
+
+
 
 describe("Order Endpoints Responses", () => {
     it(`ceate new order`, async (): Promise<void> => {
